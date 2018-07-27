@@ -1,16 +1,16 @@
-IF OBJECT_ID(N'dbo.ufnStr_Capitalize', N'TF') IS NOT NULL
-    DROP FUNCTION [dbo].[ufnStr_Capitalize];
+IF OBJECT_ID(N'dbo.ufnStr_RemoveLineBreaks', N'TF') IS NOT NULL
+    DROP FUNCTION [dbo].[ufnStr_RemoveLineBreaks];
 GO
 /********************************************************
  * Description:	Returns the given string capitalized
  * Creator:		Nuno Gomes
- * Date:		2018-07-27
+ * Date:		2018-06-19
  *******************************************************/
-CREATE FUNCTION [dbo].[ufnStr_Capitalize] (
+CREATE FUNCTION [dbo].[ufnStr_RemoveLineBreaks] (
     @string NVARCHAR(MAX)
 )
 RETURNS NVARCHAR(MAX)
 AS
 BEGIN
-    RETURN UPPER(LEFT(@string,1))+LOWER(SUBSTRING(@string,2,LEN(@string)))
+    RETURN REPLACE(REPLACE(@string, CHAR(13), ''), CHAR(10), '')
 END

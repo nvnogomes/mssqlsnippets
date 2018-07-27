@@ -1,12 +1,12 @@
-IF OBJECT_ID('[dbo].[vwRequestStatus]', 'V') IS NOT NULL 
-  DROP VIEW [dbo].[vwRequestStatus]; 
+IF OBJECT_ID('[dbo].[vw_RequestStatus]', 'V') IS NOT NULL 
+  DROP VIEW [dbo].[vw_RequestStatus]; 
 
 /**************************************************************
  * Description:	Get status and information of active requests
  * Creator:		Nuno Gomes
  * Date:		2018-05-24
  *************************************************************/
-CREATE VIEW [dbo].[vwRequestStatus]
+CREATE VIEW [dbo].[vw_RequestStatus]
 AS
 	SELECT sqltext.TEXT					[Query]
 		,req.command					[Command]
