@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+  <Header>
+  <Title>Select From Table</Title>
+   <Shortcut></Shortcut>
+   <Description>Selects data from table</Description>
+   <Author>Nvno Gomes</Author>
+   <SnippetTypes>
+    <SnippetType>Expansion</SnippetType>
+   </SnippetTypes>
+   </Header>
+   <Snippet>
+    <Declarations>
+     <Literal>
+      <ID>SchemaName</ID>
+      <ToolTip>Name of the schema</ToolTip>
+      <Default>dbo</Default>
+     </Literal>
+     <Literal>
+      <ID>TableName</ID>
+      <ToolTip>Name of the table</ToolTip>
+      <Default>Table_Name</Default>
+     </Literal>
+    </Declarations>
+    <Code Language="SQL">
+     <![CDATA[SELECT *
+FROM $SchemaName$.$TableName$;]]>
+    </Code>
+   </Snippet>
+   </CodeSnippet>
+  </CodeSnippets>
