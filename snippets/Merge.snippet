@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+  <Header>
+  <Title>Merge statement template</Title>
+   <Shortcut>sp</Shortcut>
+   <Description>Basic structure for a merge statement</Description>
+   <Author>Nvno Gomes</Author>
+   <SnippetTypes>
+    <SnippetType>Expansion</SnippetType>
+   </SnippetTypes>
+   </Header>
+   <Snippet>
+    <Declarations>
+	<Literal>
+      <ID>TargetTable</ID>
+      <ToolTip>Target table</ToolTip>
+      <Default></Default>
+     </Literal>
+	 <Literal>
+      <ID>SourceTable</ID>
+      <ToolTip>Source of information</ToolTip>
+      <Default></Default>
+     </Literal>
+     <Literal>
+      <ID>JoinCondition</ID>
+      <ToolTip>Merge Condition</ToolTip>
+      <Default></Default>
+     </Literal>
+     <Literal>
+      <ID>UpdateStatement</ID>
+      <ToolTip>Columns to update</ToolTip>
+      <Default>UpdatedAt = GETDATE()</Default>
+     </Literal>
+	 <Literal>
+      <ID>TableColumns</ID>
+      <ToolTip>Columns to create new row</ToolTip>
+      <Default></Default>
+     </Literal>
+	<Literal>
+		<ID>$InsertStatement$</ID>
+		<ToolTip>Values for the new row</ToolTip>
+		<Default></Default>
+	</Literal>
+	 <Literal>
+      <ID>OutputTable</ID>
+      <ToolTip>Log actions made</ToolTip>
+      <Default>@MergeLog</Default>
+     </Literal>
+    </Declarations>
+    <Code Language="SQL">
+     <![CDATA[
+	MERGE dbo.$TargetTable$ AS dst
+	USING dbo.$SourceTable$ AS src
+	ON $JoinCondition$
+	WHEN MATCHED THEN
+		UPDATE 
+		SET	$UpdateStatement$
+	WHEN MATCHED THEN
+		INSERT ($TableColumns$)
+		VALUES ($InsertStatement$)
+	WHEN NOT MATCHED BY SOURCE THEN
+		DELETE
+	OUTPUT $$action, INSERTED.ID INTO $OutputTable$
+	]]>
+    </Code>
+   </Snippet>
+   </CodeSnippet>
+  </CodeSnippets>
