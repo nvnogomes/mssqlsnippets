@@ -26,16 +26,14 @@ function New-Archive {
         [string]
         $ArchivePrefix 
     )
-    Begin {
+
+    Process {
         # setup variables
-        $RegexExp = Join.Path -Path $directory -ChildPath $FileRegex
-        $archiveDirectory = Join-Path -Path $directory -childPath "archive"
+        $RegexExp = Join-Path -Path $BaseDirectory -ChildPath $FileRegex
+        $archiveDirectory = Join-Path -Path $BaseDirectory -ChildPath "archive"
         $archiveFilename =  $ArchivePrefix + (Get-Date -Format "yyyyMMdd") + ".zip"
 
         md $archiveDirectory -Force | Out-Null
-    }
-
-    Process {
 
         # create archive
         $compress = @{
@@ -46,11 +44,8 @@ function New-Archive {
         }
         Compress-Archive @compress
 
-    }
-
-    End {
         # delete archived documents
         Remove-Item -Path $RegexExp
     }
 }
-Export-ModuleMember -Function New-Archive
+#Export-ModuleMember -Function New-Archive

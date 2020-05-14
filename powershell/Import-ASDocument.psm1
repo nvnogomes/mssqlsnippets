@@ -19,7 +19,7 @@ function Import-ASDocument {
         [ValidateSet("CRVFX212_MbRef", "CRVFX203_Operacao","CRVFX204_Contrato", `
             "CRVFX205_Entidade", "CRVFX206_Interveniente", "CRVFX207_Advogado",  `
             "CRVFX208_Recuperador", "CRVFX209_Solicitador", "CRVFX210_Balcao",  `
-            "CRVFX211_TipoInterveniente", "CRVFX219_ÁreasGeografica",  ` 
+            "CRVFX211_TipoInterveniente", "CRVFX219_ÁreaGeografica",  ` 
             "CRVFX220_DocumentoIdentificacao", "CRVFX221_DetalheDivida", "CRVFX222_Acordo",  `
             "CRVFX223_AcordoPrestacao","CRVFX224_DividaAcordo","CRVFX225_Colateral",  `
             "CRVFX226_FamiliaColateral", "CRVFX227_TipoColateral", "CRVFX228_TipoDocumentoIdentificacao",  `
@@ -32,22 +32,25 @@ function Import-ASDocument {
         [Parameter(Mandatory=$true)]
         [string] $Directory
     )
+
     Process {
 
-        $crvFile =  $ASDocument.Split("_")[0] + "*.dat"
+        $crvRegex =  ($ASDocument.Split("_")[0]) + "*.dat"
+        $tempFile = $ASDocument + ".dat"
         # remove quotes
         cd $Directory
-        $lastCrvfxFile = Get-ChildItem $crvFile | Sort-Object CreationTime -Descending | Select-Object -First 1
-        (Get-Content $lastCrvfxFile) -replace '"', '' | Out-File -FilePath $ASDocument -Force -Encoding ascii
+        $lastCrvfxFile = Get-ChildItem $crvRegex | Sort-Object CreationTime -Descending | Select-Object -First 1
+        (Get-Content $lastCrvfxFile) -replace '"', '' | Out-File -FilePath $tempFile -Force -Encoding bigendianunicode
 
 
          $importCsvParams = @{
             # fileinfo
-            Path = $ASDocument
+            Path = $tempFile
             Encoding = "ASCII"
             Delimiter = ";"
             NoHeaderRow = $true
             TrimmingOption = "All"
+            ParseErrorAction = "AdvanceToNextLine"
 
             # database info
             SqlInstance = $ConnectionString
@@ -59,6 +62,8 @@ function Import-ASDocument {
             KeepNulls = $true
         }
         Import-DbaCsv @importCsvParams
+
+        Remove-Item -Path $tempFile
     }
 }
-#Export-ModuleMember -Function 'Import-ASDocument'
+#Export-ModuleMember -Function Import-ASDocument
